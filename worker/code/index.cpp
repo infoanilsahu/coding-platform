@@ -1,7 +1,6 @@
-#include<ioStream>
+#include<iostream>
 using namespace std;
 
 int main() {
-        count<<"Hello C++";
-        return 0;
+    cout<< "Hello";
 }

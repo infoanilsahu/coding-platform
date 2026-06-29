@@ -17,6 +17,7 @@ model Submission {
   code String
   language String 
   output String?
+  error String?
   status SubmissionStatus @default(Processing)
 }
 

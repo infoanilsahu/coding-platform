@@ -22,12 +22,17 @@ client.connect().then(async () => {
         
         console.log("processing code of ", userId);
         let finalOutput = "";
+        let finalError = "";
 
         if( language === "cpp" ) {
             console.log(`Running user ${userId} code ${language}`);
             const filePath = `${__dirname}/code/index.cpp`;
             fs.writeFileSync(filePath, code);
             const compile = spawn("g++", [filePath, "-o", `${__dirname}/code/out`]); 
+
+            compile.stderr.on("data", function (chunk:any) {
+                finalError += chunk.toString();
+            })
 
             const compilerCode = await new Promise<number | null>( async (resolve) => {
                 compile.on("exit", async (code) => {
@@ -36,7 +41,8 @@ client.connect().then(async () => {
                         await prisma.submission.update({
                             where: {id: submissionId},
                             data: {
-                                status: "Fail"
+                                status: "Fail",
+                                error: finalError
                             }
                         })
                     } 
@@ -54,14 +60,25 @@ client.connect().then(async () => {
             
 
             await new Promise<void>((resolve) => {
-                process.on("exit", async () => {
-                    await prisma.submission.update({
-                        where: {id: submissionId},
-                        data: {
-                            output: finalOutput,
-                            status: "Success"
-                        }
-                    })
+                process.on("exit", async (code) => {
+                    if( code !== 0 ) {
+                        await prisma.submission.update({
+                            where: {id: submissionId},
+                            data: {
+                                status: "Fail",
+                               error: finalError 
+                            }
+                        })
+                    }
+                    else {
+                        await prisma.submission.update({
+                            where: {id: submissionId},
+                            data: {
+                                output: finalOutput,
+                                status: "Success"
+                            }
+                        })
+                    }
                 })
 
                 resolve()
@@ -79,15 +96,27 @@ client.connect().then(async () => {
             })
 
             await new Promise<void>((resolve) => {
-                process.on("exit", async () => {
-                    await prisma.submission.update({
-                        where: {id: submissionId},
-                        data: {
-                            output: finalOutput,
-                            status: "Success"
-                        }
-                    })
+                process.on("exit", async (code) => {
+                    if( code !== 0 ) {
+                        await prisma.submission.update({
+                            where: {id: submissionId},
+                            data: {
+                                status: "Fail",
+                               error: finalError 
+                            }
+                        })
+                    }
+                    else {
+                        await prisma.submission.update({
+                            where: {id: submissionId},
+                            data: {
+                                output: finalOutput,
+                                status: "Success"
+                            }
+                        })
+                    }
                 })
+
                 resolve()
             })
             
@@ -106,15 +135,27 @@ client.connect().then(async () => {
             })
 
             await new Promise<void>((resolve) => {
-                process.on("exit", async () => {
-                    await prisma.submission.update({
-                        where: {id: submissionId},
-                        data: {
-                            output: finalOutput,
-                            status: "Success"
-                        }
-                    })
+                process.on("exit", async (code) => {
+                    if( code !== 0 ) {
+                        await prisma.submission.update({
+                            where: {id: submissionId},
+                            data: {
+                                status: "Fail",
+                               error: finalError 
+                            }
+                        })
+                    }
+                    else {
+                        await prisma.submission.update({
+                            where: {id: submissionId},
+                            data: {
+                                output: finalOutput,
+                                status: "Success"
+                            }
+                        })
+                    }
                 })
+
                 resolve()
             })
 

@@ -12,6 +12,7 @@ export function App() {
   const [lan, setLan] = useState("")
   const [status, setStatus] = useState("")
   const [output, setOutput] = useState("")
+  const [Error, setError] = useState("")
 
   async function PollBackend(submissionId: string) {
     const res = await axios.get("http://localhost:3001/submission/"+submissionId)
@@ -22,6 +23,7 @@ export function App() {
       if( data.status !== "Processing" ) {
         setStatus(data.status)
         setOutput(data.output)
+        setError(data.error)
       }
       else {
         await new Promise((resolve) => setTimeout(resolve, 3000))
@@ -34,6 +36,7 @@ export function App() {
     try {
       setStatus("Processing")
       setOutput("")
+      setError("")
 
       const res = await axios.post("http://localhost:3001/submission", {
         userId: 2,
@@ -96,7 +99,8 @@ export function App() {
           {status}
         </div>
         <div className="output">
-          {output}
+          {status === "Success" && output}
+          {status === "Fail" && Error}
         </div>
 
       </div>

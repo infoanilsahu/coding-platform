@@ -1,4 +1,6 @@
-for(let i = 0; i < 5; i++) {
-      console.log(i)
-      console.log(2*i)
+#include<iostream>
+using namespace std;
+
+int main() {
+    cout<< "Hello";
 }
