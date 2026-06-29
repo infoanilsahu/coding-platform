@@ -2,7 +2,6 @@ import { createClient } from "redis";
 import { spawn } from "child_process";
 import fs from "fs";
 import { prisma } from "./db";
-import { resolve } from "dns";
 
 const client = createClient();
 
@@ -84,7 +83,8 @@ client.connect().then(async () => {
                     await prisma.submission.update({
                         where: {id: submissionId},
                         data: {
-                            output: finalOutput
+                            output: finalOutput,
+                            status: "Success"
                         }
                     })
                 })
@@ -110,7 +110,8 @@ client.connect().then(async () => {
                     await prisma.submission.update({
                         where: {id: submissionId},
                         data: {
-                            output: finalOutput
+                            output: finalOutput,
+                            status: "Success"
                         }
                     })
                 })
@@ -119,6 +120,6 @@ client.connect().then(async () => {
 
         }
 
-        
+
     }
 })

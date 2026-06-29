@@ -1,5 +1,7 @@
-#include<iostream>  using namespace std; 
- int main() { 
- cout<<"i brother "; 
- return 0; 
- }
+#include<ioStream>
+using namespace std;
+
+int main() {
+        count<<"Hello C++";
+        return 0;
+}

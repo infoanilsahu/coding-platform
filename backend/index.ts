@@ -1,15 +1,19 @@
 import express, { type Request, type Response } from "express"
 import { createClient } from "redis"
 import { prisma } from "./db"
+import cors from "cors"
 
 const client = createClient()
 client.connect()
 
 const app = express()
 
-const port = process.env.PORT ?? 3000;
+const port = process.env.PORT ?? 3001;
 
 app.use(express.json())
+app.use(cors({
+    origin: "*",   
+}))
 
 app.post("/submission", async (req: Request, res: Response) => {
     const { userId, questionId, code, language } = req.body
